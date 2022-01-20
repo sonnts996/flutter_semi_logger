@@ -29,7 +29,7 @@ import 'package:flutter_semi_logger/flutter_semi_logger.dart';
 
 ## Features and bugs
 
-For ios, color and decoration logging is in development. Logging with color and decoration is also disable in the app release. Then all logs will use the default decoration format.
+For ios, color and decoration logging is in development. Logging with color and decoration is also disable in the app release. Then all logs will use the default decorator format.
 
 Please file feature requests and bugs at the [issue tracker](https://github.com/sonnts996/flutter_semi_logger/issues).
 
