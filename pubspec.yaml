@@ -1,6 +1,6 @@
 name: flutter_semi_logger
 description: Color Logger and Base Exception for flutter project.
-version: 0.0.1
+version: 0.0.1+1
 homepage: https://github.com/sonnts996/flutter_semi_logger
 
 environment:
