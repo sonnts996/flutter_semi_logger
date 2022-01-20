@@ -79,9 +79,9 @@ class SemiLogger {
   core.bool get decoration => _decoration;
 
   core.String get _header {
-    if(decoration) {
+    if (decoration) {
       return styleData.header.apply('[$name]');
-    }else{
+    } else {
       return '[$name]';
     }
   }
@@ -132,7 +132,6 @@ class SemiLogger {
           SemiLogLevel.print,
           SemiLogLevel.separator
         ].contains(level)) {
-
       if (level == SemiLogLevel.print) {
         print(message, level);
       } else if (hasHeader && !Platform.isAndroid) {
