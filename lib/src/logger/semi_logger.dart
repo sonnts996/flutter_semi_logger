@@ -2,31 +2,34 @@
  Created by Thanh Son on 19/01/2022.
  Copyright (c) 2022 . All rights reserved.
 */
-import 'dart:core';
 import 'dart:io';
+import 'dart:core';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_semi_logger/src/logger/delegate/android_debug_delegate.dart';
+import 'package:flutter_semi_logger/src/logger/delegate/ios_debug_delegate.dart';
+import 'package:flutter_semi_logger/src/logger/delegate/log_delegate.base.dart';
+import 'package:flutter_semi_logger/src/logger/delegate/release_delegate.dart';
 import 'package:flutter_semi_logger/src/logger/level/semi_log_level.dart';
 import 'package:flutter_semi_logger/src/logger/style/semi_log_style.dart';
 import 'dart:core' as core;
 
-import 'package:flutter_semi_logger/src/native/channel_connect.dart';
+part 'semi_logger_v1.dart';
 
 SemiLogger _inst = SemiLogger.setup();
-
-bool _decoration = Platform.isAndroid && kDebugMode;
 
 /// The logger is static in app.
 /// That mean is the logger config will be apply on all logger object
 /// on your app.
 /// Use instance for custom a special logger.
 ///
-class SemiLogger {
+abstract class SemiLogger {
+  @protected
   const SemiLogger._({
     required this.name,
     required this.styleData,
     required this.separatorChar,
     required this.separatorLength,
-  }) : debugMode = kDebugMode;
+  });
 
   static SemiLogger get instance => _inst;
 
@@ -38,7 +41,7 @@ class SemiLogger {
     core.String lineChar = '=',
     core.int lineLength = 50,
   }) {
-    _inst = SemiLogger._(
+    _inst = _SemiLoggerV1(
       name: name,
       styleData: styleData,
       separatorChar: lineChar,
@@ -53,8 +56,9 @@ class SemiLogger {
           {core.String? name = 'semi-log',
           core.bool? debugMode = true,
           core.String? lineChar = '=',
-          core.int? lineLength = 50}) =>
-      SemiLogger._(
+          core.int? lineLength = 50,
+          styleData}) =>
+      _SemiLoggerV1(
           name: name ?? _inst.name,
           styleData: _inst.styleData,
           separatorChar: lineChar ?? _inst.separatorChar,
@@ -64,7 +68,7 @@ class SemiLogger {
   final core.String name;
 
   /// Some log only print on debugMode
-  final core.bool debugMode;
+  core.bool get debugMode;
 
   /// Your styles of logger
   final SemiLogStyleData styleData;
@@ -75,47 +79,9 @@ class SemiLogger {
   /// The number char in line separator
   final core.int separatorLength;
 
-  /// Enable decoration mode,
-  core.bool get decoration => _decoration;
-
-  core.String get _header {
-    if (decoration) {
-      return styleData.header.apply('[$name]');
-    } else {
-      return '[$name]';
-    }
-  }
-
   /// print your object without format
   /// doesn't depend on debugMode
-  void print(core.dynamic object, [SemiLogLevel level = SemiLogLevel.debug]) {
-    // core.print(object);
-    var error = ErrorLog.assertLog;
-    switch (level) {
-      case SemiLogLevel.print:
-      case SemiLogLevel.header:
-      case SemiLogLevel.separator:
-        error = ErrorLog.assertLog;
-        break;
-      case SemiLogLevel.warning:
-        error = ErrorLog.warn;
-        break;
-      case SemiLogLevel.error:
-        error = ErrorLog.error;
-        break;
-      case SemiLogLevel.info:
-        error = ErrorLog.info;
-        break;
-      case SemiLogLevel.debug:
-        error = ErrorLog.debug;
-        break;
-      case SemiLogLevel.success:
-      case SemiLogLevel.fail:
-        error = ErrorLog.verbose;
-        break;
-    }
-    ChannelConnect().print(object, log: error, tag: _header);
-  }
+  void print(core.dynamic object, [SemiLogLevel level = SemiLogLevel.debug]);
 
   /// print the message with level format in debugMode
   /// except error, warning and info
@@ -123,104 +89,43 @@ class SemiLogger {
     SemiLogLevel level = SemiLogLevel.debug,
     required core.String message,
     core.bool hasHeader = true,
-  }) {
-    if (debugMode ||
-        [
-          SemiLogLevel.error,
-          SemiLogLevel.warning,
-          SemiLogLevel.info,
-          SemiLogLevel.print,
-          SemiLogLevel.separator
-        ].contains(level)) {
-      if (level == SemiLogLevel.print) {
-        print(message, level);
-      } else if (hasHeader && !Platform.isAndroid) {
-        print('$_header ${styleData.apply(message, level)}', level);
-      } else {
-        print(styleData.apply(message, level));
-      }
-    }
-  }
+  });
 
   /// print a line with custom
   void custom(List<SemiLogContent> contents,
       {String separator = ' ',
       hasHeader = true,
-      SemiLogLevel level = SemiLogLevel.debug}) {
-    String msg = contents.map((e) => e.apply()).join(separator);
-    if (hasHeader && !Platform.isAndroid) {
-      print('$_header $msg', level);
-    } else {
-      print(msg, level);
-    }
-  }
+      SemiLogLevel level = SemiLogLevel.debug});
 
   /// print the message in error level
-  void e(core.String message) {
-    log(message: message, level: SemiLogLevel.error);
-  }
+  void e(core.String message);
 
   /// print the message in info level
-  void i(core.String message) {
-    log(message: message, level: SemiLogLevel.info);
-  }
+  void i(core.String message);
 
   /// print the message in warning level
-  void w(core.String message) {
-    log(message: message, level: SemiLogLevel.warning);
-  }
+  void w(core.String message);
 
   /// print the message in debug level
-  void d(core.String message) {
-    log(message: message, level: SemiLogLevel.debug);
-  }
+  void d(core.String message);
 
   /// print the start line
-  void separator([core.String message = '', bool hasHeader = false]) {
-    log(
-        message: message.padRight(separatorLength, separatorChar),
-        level: SemiLogLevel.separator,
-        hasHeader: hasHeader);
-  }
+  void separator([core.String message = '', bool hasHeader = false]);
 
   /// print the message in success level
-  void success(core.String message) {
-    log(message: message, level: SemiLogLevel.success);
-  }
+  void success(core.String message);
 
   /// print the message in fail level
-  void fail(core.String message) {
-    log(message: message, level: SemiLogLevel.fail);
-  }
+  void fail(core.String message);
 
   /// print empty line
-  void breakLine() {
-    log(message: '', level: SemiLogLevel.info, hasHeader: false);
-  }
+  void breakLine();
 
   /// print the multi line message
   void block(
-    List<SemiLogLevelData> messages, {
+    List<SemiLogData> messages, {
     core.String? linePrefix,
     core.bool lineNumber = false,
     bool headerSeparator = false,
-  }) {
-    headerSeparator ? separator('', true) : log(message: '');
-    int padRight = messages.length.toString().length;
-    for (int i = 0; i < messages.length; i++) {
-      final data = messages[i];
-      var msg = data.msg;
-      if (data.level == SemiLogLevel.separator) {
-        separator(msg, false);
-      } else {
-        if (linePrefix != null) {
-          msg = '$linePrefix $msg';
-        }
-        if (lineNumber) {
-          msg = '${i.toString().padRight(padRight)} $msg';
-        }
-        log(message: msg, level: data.level, hasHeader: false);
-      }
-    }
-  }
+  });
 }

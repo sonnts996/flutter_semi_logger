@@ -135,92 +135,98 @@ enum ANSIStyles {
   bgWhite,
 }
 
-String _getStyle(ANSIStyles style) {
-  switch (style) {
-    case ANSIStyles.reset:
-      return '0';
-    case ANSIStyles.bold:
-      return '1';
-    case ANSIStyles.dark:
-      return '2';
-    case ANSIStyles.italic:
-      return '3';
-    case ANSIStyles.underline:
-      return '4';
-    case ANSIStyles.blink:
-      return '5';
-    case ANSIStyles.reverse:
-      return '7';
-    case ANSIStyles.concealed:
-      return '8';
-    case ANSIStyles.defaultStyle:
-      return '39';
-    case ANSIStyles.black:
-      return '30';
-    case ANSIStyles.red:
-      return '31';
-    case ANSIStyles.green:
-      return '32';
-    case ANSIStyles.yellow:
-      return '33';
-    case ANSIStyles.blue:
-      return '34';
-    case ANSIStyles.magenta:
-      return '35';
-    case ANSIStyles.cyan:
-      return '36';
-    case ANSIStyles.lightGray:
-      return '37';
-    case ANSIStyles.darkGray:
-      return '90';
-    case ANSIStyles.lightRed:
-      return '91';
-    case ANSIStyles.lightGreen:
-      return '92';
-    case ANSIStyles.lightYellow:
-      return '93';
-    case ANSIStyles.lightBlue:
-      return '94';
-    case ANSIStyles.lightMagenta:
-      return '95';
-    case ANSIStyles.lightCyan:
-      return '96';
-    case ANSIStyles.white:
-      return '97';
-    case ANSIStyles.bgDefault:
-      return '49';
-    case ANSIStyles.bgBlack:
-      return '40';
-    case ANSIStyles.bgRed:
-      return '41';
-    case ANSIStyles.bgGreen:
-      return '42';
-    case ANSIStyles.bgYellow:
-      return '43';
-    case ANSIStyles.bgBlue:
-      return '44';
-    case ANSIStyles.bgMagenta:
-      return '45';
-    case ANSIStyles.bgCyan:
-      return '46';
-    case ANSIStyles.bgLightGray:
-      return '47';
-    case ANSIStyles.bgDarkGray:
-      return '100';
-    case ANSIStyles.bgLightRed:
-      return '101';
-    case ANSIStyles.bgLightGreen:
-      return '102';
-    case ANSIStyles.bgLightYellow:
-      return '103';
-    case ANSIStyles.bgLightBlue:
-      return '104';
-    case ANSIStyles.bgLightMagenta:
-      return '105';
-    case ANSIStyles.bgLightCyan:
-      return '106';
-    case ANSIStyles.bgWhite:
-      return '107';
+extension ANSIStylesX on ANSIStyles {
+  int code() {
+    return int.parse(getStyle());
+  }
+
+  String getStyle() {
+    switch (this) {
+      case ANSIStyles.reset:
+        return '0';
+      case ANSIStyles.bold:
+        return '1';
+      case ANSIStyles.dark:
+        return '2';
+      case ANSIStyles.italic:
+        return '3';
+      case ANSIStyles.underline:
+        return '4';
+      case ANSIStyles.blink:
+        return '5';
+      case ANSIStyles.reverse:
+        return '7';
+      case ANSIStyles.concealed:
+        return '8';
+      case ANSIStyles.defaultStyle:
+        return '39';
+      case ANSIStyles.black:
+        return '30';
+      case ANSIStyles.red:
+        return '31';
+      case ANSIStyles.green:
+        return '32';
+      case ANSIStyles.yellow:
+        return '33';
+      case ANSIStyles.blue:
+        return '34';
+      case ANSIStyles.magenta:
+        return '35';
+      case ANSIStyles.cyan:
+        return '36';
+      case ANSIStyles.lightGray:
+        return '37';
+      case ANSIStyles.darkGray:
+        return '90';
+      case ANSIStyles.lightRed:
+        return '91';
+      case ANSIStyles.lightGreen:
+        return '92';
+      case ANSIStyles.lightYellow:
+        return '93';
+      case ANSIStyles.lightBlue:
+        return '94';
+      case ANSIStyles.lightMagenta:
+        return '95';
+      case ANSIStyles.lightCyan:
+        return '96';
+      case ANSIStyles.white:
+        return '97';
+      case ANSIStyles.bgDefault:
+        return '49';
+      case ANSIStyles.bgBlack:
+        return '40';
+      case ANSIStyles.bgRed:
+        return '41';
+      case ANSIStyles.bgGreen:
+        return '42';
+      case ANSIStyles.bgYellow:
+        return '43';
+      case ANSIStyles.bgBlue:
+        return '44';
+      case ANSIStyles.bgMagenta:
+        return '45';
+      case ANSIStyles.bgCyan:
+        return '46';
+      case ANSIStyles.bgLightGray:
+        return '47';
+      case ANSIStyles.bgDarkGray:
+        return '100';
+      case ANSIStyles.bgLightRed:
+        return '101';
+      case ANSIStyles.bgLightGreen:
+        return '102';
+      case ANSIStyles.bgLightYellow:
+        return '103';
+      case ANSIStyles.bgLightBlue:
+        return '104';
+      case ANSIStyles.bgLightMagenta:
+        return '105';
+      case ANSIStyles.bgLightCyan:
+        return '106';
+      case ANSIStyles.bgWhite:
+        return '107';
+    }
   }
 }
 
@@ -228,21 +234,13 @@ String _getStyle(ANSIStyles style) {
 /// example: print('\u{1B}[31m\u{1B}[103mHello World!\u{1B}[0m');
 ///
 String apply(
-  String text, {
-  ANSIStyles? color,
-  ANSIStyles? bg,
-  ANSIStyles? fontStyle,
+  String text,
+  Set<ANSIStyles> styles, {
+  String esc = '\u{1B}',
 }) {
   String rs = text;
-
-  if (color != null) {
-    rs = '\u{1B}[${_getStyle(color)}m' + rs;
-  }
-  if (bg != null) {
-    rs = '\u{1B}[${_getStyle(bg)}m' + rs;
-  }
-  if (fontStyle != null) {
-    rs = '\u{1B}[${_getStyle(fontStyle)}m' + rs;
+  for (var style in styles) {
+    rs = '$esc[${style.getStyle()}m' + rs;
   }
   rs = rs + '\u{1B}[0m';
   return rs;

@@ -41,7 +41,7 @@ class SemiException implements Exception {
   void print({SemiLogger? logger, bool debugMode = true}) {
     if (debugMode) {
       var _logger = logger ?? SemiLogger(name: errorCode, debugMode: debugMode);
-      final messages = <SemiLogLevelData>[];
+      final messages = <SemiLogData>[];
       if (message != null) {
         messages.add(SemiLogLevel.error.msg(message!));
       }

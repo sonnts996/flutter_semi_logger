@@ -21,7 +21,7 @@ enum SemiLogLevel {
   separator,
 
   // Warning level (include debug mode)
-  warning,
+  warn,
 
   // Error level (include debug mode)
   error,

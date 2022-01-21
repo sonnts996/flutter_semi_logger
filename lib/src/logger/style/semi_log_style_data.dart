@@ -8,51 +8,46 @@ part of 'semi_log_style.dart';
 /// Your styles of logger
 class SemiLogStyleData {
   const SemiLogStyleData({
-    this.header = const SemiLogStyle(color: colored.ANSIStyles.lightGray),
-    this.separator = const SemiLogStyle(color: colored.ANSIStyles.magenta),
+    this.header = const SemiLogStyle({ANSIStyles.lightGray}),
+    this.separator = const SemiLogStyle({ANSIStyles.lightGray}),
     this.debug = const SemiLogStyle(),
-    this.warning = const SemiLogStyle(color: colored.ANSIStyles.yellow),
-    this.error = const SemiLogStyle(color: colored.ANSIStyles.red),
+    this.warn = const SemiLogStyle({ANSIStyles.yellow}),
+    this.error = const SemiLogStyle({ANSIStyles.red}),
     this.info = const SemiLogStyle(),
-    this.fail = const SemiLogStyle(color: colored.ANSIStyles.lightRed),
-    this.success = const SemiLogStyle(color: colored.ANSIStyles.green),
+    this.fail = const SemiLogStyle({ANSIStyles.lightRed}),
+    this.success = const SemiLogStyle({ANSIStyles.green}),
   });
 
   final SemiLogStyle header;
   final SemiLogStyle separator;
   final SemiLogStyle debug;
-  final SemiLogStyle warning;
+  final SemiLogStyle warn;
   final SemiLogStyle error;
   final SemiLogStyle info;
   final SemiLogStyle success;
   final SemiLogStyle fail;
 
   /// return your style with level
-  SemiLogStyle getStyle(SemiLogLevel level) {
+  Set<ANSIStyles> getStyle(SemiLogLevel level) {
     switch (level) {
       case SemiLogLevel.header:
-        return header;
+        return header.styles;
       case SemiLogLevel.separator:
-        return separator;
+        return separator.styles;
       case SemiLogLevel.debug:
-        return debug;
-      case SemiLogLevel.warning:
-        return warning;
+        return debug.styles;
+      case SemiLogLevel.warn:
+        return warn.styles;
       case SemiLogLevel.error:
-        return error;
+        return error.styles;
       case SemiLogLevel.info:
-        return info;
+        return info.styles;
       case SemiLogLevel.success:
-        return success;
+        return success.styles;
       case SemiLogLevel.fail:
-        return fail;
+        return fail.styles;
       case SemiLogLevel.print:
-        return info;
+        return info.styles;
     }
-  }
-
-  /// return your string with code style
-  String apply(String text, SemiLogLevel level) {
-    return getStyle(level).apply(text);
   }
 }

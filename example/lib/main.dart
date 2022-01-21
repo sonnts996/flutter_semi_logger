@@ -57,27 +57,29 @@ class _MyAppState extends State<MyApp> {
             ListTile(
               title: const Text('Log custom'),
               subtitle: const Text('"Hello World!" will be print with custom'),
-              onTap: () => SemiLogger().custom(const [
-                SemiLogContent('H', fontStyle: ANSIStyles.underline),
-                SemiLogContent('e', color: ANSIStyles.red),
-                SemiLogContent('ll', color: ANSIStyles.red),
-                SemiLogContent(
-                  'o',
-                  bg: ANSIStyles.yellow,
+              onTap: () => SemiLogger().custom([
+                SemiLogContent.gennerate('H', underline: true),
+                SemiLogContent.gennerate('e', color: ANSIStyles.red),
+                SemiLogContent.gennerate('ll', color: ANSIStyles.red),
+                SemiLogContent.gennerate('o', bg: ANSIStyles.yellow),
+                SemiLogContent.gennerate(' ', bg: ANSIStyles.yellow),
+                SemiLogContent.gennerate('Wo', color: ANSIStyles.yellow),
+                SemiLogContent.gennerate(
+                  'r',
+                  color: ANSIStyles.green,
+                  bold: true,
                 ),
-                SemiLogContent(
-                  ' ',
-                  bg: ANSIStyles.yellow,
+                SemiLogContent.gennerate(
+                  'ld',
+                  color: ANSIStyles.red,
+                  bg: ANSIStyles.bgBlue,
+                  underline: true,
                 ),
-                SemiLogContent('Wo', color: ANSIStyles.yellow),
-                SemiLogContent('r',
-                    color: ANSIStyles.green, fontStyle: ANSIStyles.bold),
-                SemiLogContent('ld',
-                    color: ANSIStyles.red,
-                    bg: ANSIStyles.bgBlue,
-                    fontStyle: ANSIStyles.underline),
-                SemiLogContent('!',
-                    bg: ANSIStyles.bgBlue, fontStyle: ANSIStyles.underline),
+                SemiLogContent.gennerate(
+                  '!',
+                  bg: ANSIStyles.bgBlue,
+                  underline: true,
+                ),
               ], separator: ''),
             )
           ],

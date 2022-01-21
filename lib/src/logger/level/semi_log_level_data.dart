@@ -7,8 +7,8 @@ part of 'semi_log_level.dart';
 
 extension SemiLogLevelX on SemiLogLevel {
   /// use for log a block
-  SemiLogLevelData msg(String message) {
-    return SemiLogLevelData(this, message);
+  SemiLogData msg(String message) {
+    return SemiLogData(this, message);
   }
 
   /// another log print
@@ -16,29 +16,19 @@ extension SemiLogLevelX on SemiLogLevel {
     SemiLogger().log(message: message, level: this);
   }
 
-  SemiLogLevelData custom(List<SemiLogContent> contents,
-      [String separator = ' ']) {
-    return SemiLogLevelData(
-      SemiLogLevel.print,
-      contents.map((e) => e.apply()).join(separator),
-    );
-  }
-
+  /// convert to SemiLogContent
   SemiLogContent toContent(String message) {
-    return SemiLogger().styleData.getStyle(this).toContent(message);
+    return SemiLogContent.styles(
+      message,
+      styles: SemiLogger().styleData.getStyle(this),
+    );
   }
 }
 
 /// data for block print
 ///
-class SemiLogLevelData {
-  const SemiLogLevelData(this.level, this.msg);
-
-  factory SemiLogLevelData.fromContents(List<SemiLogContent> contents,
-      [String separator = ' ']) {
-    return SemiLogLevelData(
-        SemiLogLevel.print, contents.map((e) => e.apply()).join(separator));
-  }
+class SemiLogData {
+  const SemiLogData(this.level, this.msg);
 
   /// massage use for block print
   final String msg;
