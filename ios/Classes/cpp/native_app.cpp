@@ -10,6 +10,6 @@ using namespace std;
 
 char* semiPrint(char* text){
        printf("hello");
-       printf(text);
+       printf("%s", text);
     return text;
 }
