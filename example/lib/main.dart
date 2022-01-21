@@ -1,7 +1,5 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_semi_logger/flutter_semi_logger.dart';
 
 void main() {
@@ -58,24 +56,24 @@ class _MyAppState extends State<MyApp> {
               title: const Text('Log custom'),
               subtitle: const Text('"Hello World!" will be print with custom'),
               onTap: () => SemiLogger().custom([
-                SemiLogContent.gennerate('H', underline: true),
-                SemiLogContent.gennerate('e', color: ANSIStyles.red),
-                SemiLogContent.gennerate('ll', color: ANSIStyles.red),
-                SemiLogContent.gennerate('o', bg: ANSIStyles.yellow),
-                SemiLogContent.gennerate(' ', bg: ANSIStyles.yellow),
-                SemiLogContent.gennerate('Wo', color: ANSIStyles.yellow),
-                SemiLogContent.gennerate(
+                SemiLogContent.generate('H', underline: true),
+                SemiLogContent.generate('e', color: ANSIStyles.red),
+                SemiLogContent.generate('ll', color: ANSIStyles.red),
+                SemiLogContent.generate('o', bg: ANSIStyles.yellow),
+                SemiLogContent.generate(' ', bg: ANSIStyles.yellow),
+                SemiLogContent.generate('Wo', color: ANSIStyles.yellow),
+                SemiLogContent.generate(
                   'r',
                   color: ANSIStyles.green,
                   bold: true,
                 ),
-                SemiLogContent.gennerate(
+                SemiLogContent.generate(
                   'ld',
                   color: ANSIStyles.red,
                   bg: ANSIStyles.bgBlue,
                   underline: true,
                 ),
-                SemiLogContent.gennerate(
+                SemiLogContent.generate(
                   '!',
                   bg: ANSIStyles.bgBlue,
                   underline: true,

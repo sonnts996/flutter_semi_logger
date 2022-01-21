@@ -7,7 +7,7 @@ import 'package:flutter_semi_logger/src/logger/level/semi_log_level.dart';
 
 part 'semi_log_style_data.dart';
 
-Set<ANSIStyles> _gennerate({
+Set<ANSIStyles> _generate({
   ANSIStyles? color,
   ANSIStyles? bg,
   bool bold = false,
@@ -37,7 +37,7 @@ class SemiLogStyle {
   const SemiLogStyle([this.styles = const {}]);
 
   /// another contructor
-  factory SemiLogStyle.gennerate({
+  factory SemiLogStyle.generate({
     ANSIStyles? color,
     ANSIStyles? bg,
     bool bold = false,
@@ -48,7 +48,7 @@ class SemiLogStyle {
     bool italic = false,
     bool dark = false,
   }) =>
-      SemiLogStyle(_gennerate(
+      SemiLogStyle(_generate(
           color: color,
           bg: bg,
           bold: bold,
@@ -72,7 +72,7 @@ class SemiLogContent extends SemiLogStyle {
       : super(styles);
 
   /// another contructor
-  factory SemiLogContent.gennerate(
+  factory SemiLogContent.generate(
     String msg, {
     ANSIStyles? color,
     ANSIStyles? bg,
@@ -86,7 +86,7 @@ class SemiLogContent extends SemiLogStyle {
   }) =>
       SemiLogContent(
           msg,
-          _gennerate(
+          _generate(
               color: color,
               bg: bg,
               bold: bold,
