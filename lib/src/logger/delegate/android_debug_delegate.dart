@@ -8,14 +8,14 @@ import 'package:flutter_semi_logger/src/logger/level/semi_log_level.dart';
 import 'package:flutter_semi_logger/src/native/channel_connect.dart';
 
 class AndroidDebugDelegate extends LogDelegate {
-
   @override
   String apply(String text, Set<colored.ANSIStyles> styles) {
     return colored.apply(text, styles);
   }
 
   @override
-  void print(dynamic message, {String? header, SemiLogLevel? level, String tag = ''}) {
+  void print(dynamic message,
+      {String? header, SemiLogLevel? level, String tag = ''}) {
     var error = ErrorLog.assertLog;
     switch (level) {
       case SemiLogLevel.warn:

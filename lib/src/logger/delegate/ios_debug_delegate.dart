@@ -19,7 +19,8 @@ class IosDebugDelegate extends LogDelegate {
   }
 
   @override
-  void print(String message, {String? header , SemiLogLevel? level, String tag = ''}) {
+  void print(String message,
+      {String? header, SemiLogLevel? level, String tag = ''}) {
     final finalTag = header != null ? '[$header]' : '';
     ChannelConnect()
         .print('$finalTag $message', tag: finalTag, log: ErrorLog.assertLog);

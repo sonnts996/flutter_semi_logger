@@ -8,7 +8,6 @@ import 'package:flutter_semi_logger/src/logger/level/semi_log_level.dart';
 import 'package:flutter_semi_logger/src/native/channel_connect.dart';
 
 class ReleaseDelegate extends LogDelegate {
-
   @override
   String apply(String text, Set<ANSIStyles> styles) {
     return text;
