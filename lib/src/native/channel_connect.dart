@@ -3,6 +3,18 @@
  Copyright (c) 2022 . All rights reserved.
 */
 import 'package:flutter/services.dart';
+import 'dart:ffi';
+import 'dart:io';
+import 'package:ffi/ffi.dart';
+
+typedef _SemiPrint = Pointer<Utf8> Function(Pointer<Utf8>);
+
+DynamicLibrary _lib = Platform.isAndroid
+    ? DynamicLibrary.open('libnative_app.so')
+    : DynamicLibrary.process();
+
+final Pointer<Utf8> Function(Pointer<Utf8> text) _semiPrintUtf8 =
+    _lib.lookup<NativeFunction<_SemiPrint>>("semiPrint").asFunction();
 
 enum ErrorLog {
   verbose,
@@ -42,5 +54,10 @@ class ChannelConnect {
       'type': log.name(),
       'tag': tag,
     });
+  }
+
+  void semiPrint(String text) {
+    var rs = _semiPrintUtf8(text.toNativeUtf8());
+    print(rs.toDartString());
   }
 }

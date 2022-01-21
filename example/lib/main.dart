@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    ChannelConnect().semiPrint('Hello World');
     super.initState();
   }
 
